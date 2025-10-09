@@ -39,7 +39,46 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->resources([
+                // Core Module
+                \Modules\Core\Filament\Resources\CompanySettingResource::class,
+                \Modules\Core\Filament\Resources\ActivityLogResource::class,
+                
+                // HR Module
                 \Modules\HR\Filament\Resources\EmployeeResource::class,
+                
+                // Inventory Module
+                \Modules\Inventory\Filament\Resources\ProductResource::class,
+                \Modules\Inventory\Filament\Resources\CategoryResource::class,
+                \Modules\Inventory\Filament\Resources\BrandResource::class,
+                \Modules\Inventory\Filament\Resources\UnitResource::class,
+                \Modules\Inventory\Filament\Resources\WarehouseResource::class,
+                \Modules\Inventory\Filament\Resources\StockMovementResource::class,
+                
+                // Sales Module
+                \Modules\Sales\Filament\Resources\CustomerResource::class,
+                \Modules\Sales\Filament\Resources\QuotationResource::class,
+                \Modules\Sales\Filament\Resources\SalesOrderResource::class,
+                \Modules\Sales\Filament\Resources\InvoiceResource::class,
+                \Modules\Sales\Filament\Resources\PaymentResource::class,
+                
+                // Purchasing Module
+                \Modules\Purchasing\Resources\VendorResource::class,
+                \Modules\Purchasing\Resources\PurchaseOrderResource::class,
+                
+                // Finance Module
+                \Modules\Finance\Resources\AccountResource::class,
+                \Modules\Finance\Resources\JournalResource::class,
+            ])
+            ->navigationGroups([
+                'Dashboard',
+                'Sales',
+                'Purchasing',
+                'Inventory',
+                'Finance',
+                'HR',
+                'CRM',
+                'Reports',
+                'System',
             ])
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -47,8 +86,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Dashboard Widgets
+                \App\Filament\Widgets\ERPStatsOverview::class,
+                \App\Filament\Widgets\SalesChart::class,
+                \App\Filament\Widgets\RecentInvoices::class,
+                \App\Filament\Widgets\LowStockProducts::class,
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -18,6 +18,26 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        
+        // Sales Module Events
+        \App\Events\SalesOrderCreated::class => [
+            // Add listeners here if needed
+        ],
+        \App\Events\SalesOrderDelivered::class => [
+            \App\Listeners\DeductInventoryFromSales::class,
+            \App\Listeners\RecordSalesRevenue::class,
+        ],
+        
+        // Purchasing Module Events
+        \App\Events\PurchaseOrderReceived::class => [
+            \App\Listeners\AddInventoryFromPurchase::class,
+            \App\Listeners\RecordPurchaseExpense::class,
+        ],
+        
+        // Finance Module Events
+        \App\Events\InvoicePaid::class => [
+            \App\Listeners\RecordPaymentReceipt::class,
+        ],
     ];
 
     /**

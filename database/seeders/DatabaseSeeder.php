@@ -13,14 +13,25 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RolePermissionSeeder::class,
+            // Core & Security
+            EnhancedRolesAndPermissionsSeeder::class,
+            
+            // Finance Module - Chart of Accounts
+            ChartOfAccountsSeeder::class,
+            
+            // Inventory Module - Master Data
+            WarehouseSeeder::class,
+            InventoryMasterDataSeeder::class,
+            
+            // Sales & Purchasing - Sample Data
+            SampleCustomersSeeder::class,
+            SampleVendorsSeeder::class,
+            
+            // Production (if exists)
+            // ProductionSeeder::class,
         ]);
 
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->command->info('✅ All seeders completed successfully!');
+        $this->command->info('🎉 Next ERP is ready for production use!');
     }
 }

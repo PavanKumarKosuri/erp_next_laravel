@@ -1,0 +1,7 @@
+{
+    "name": "Finance",
+    "description": "The Finance module",
+    "version": "1.0.0",
+    "enabled": true,
+    "dependencies": []
+}
