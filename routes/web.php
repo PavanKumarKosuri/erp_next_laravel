@@ -13,14 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+// Redirect root to Filament admin panel
+Route::redirect('/', '/admin');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Redirect old dashboard to Filament
+Route::redirect('/dashboard', '/admin')->middleware(['auth', 'verified']);
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-require __DIR__.'/auth.php';
+// Redirect profile to Filament (handled by Filament's user menu)
+Route::redirect('/profile', '/admin')->middleware(['auth']);
