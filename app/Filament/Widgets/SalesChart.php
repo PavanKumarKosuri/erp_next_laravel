@@ -18,8 +18,8 @@ class SalesChart extends ChartWidget
         $data = SalesOrder::where('created_at', '>=', now()->subMonths(12))
             ->where('status', '!=', 'cancelled')
             ->select(
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
-                DB::raw('SUM(total_amount) as total')
+                DB::raw("TO_CHAR(created_at, 'YYYY-MM') as month"),
+                DB::raw('SUM(total) as total')
             )
             ->groupBy('month')
             ->orderBy('month')

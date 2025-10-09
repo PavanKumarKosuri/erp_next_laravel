@@ -48,7 +48,7 @@ class RecordSalesRevenue
             JournalEntry::create([
                 'journal_id' => $journal->id,
                 'account_id' => $accountsReceivable->id,
-                'debit' => $salesOrder->total_amount,
+                'debit' => $salesOrder->total,
                 'credit' => 0,
                 'description' => "A/R for Sales Order #{$salesOrder->order_number}",
             ]);

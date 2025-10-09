@@ -32,7 +32,7 @@ class RecentInvoices extends BaseWidget
                     ->label('Customer')
                     ->searchable(),
                 
-                Tables\Columns\TextColumn::make('total_amount')
+                Tables\Columns\TextColumn::make('total')
                     ->label('Total')
                     ->money('IDR')
                     ->sortable(),
@@ -45,7 +45,7 @@ class RecentInvoices extends BaseWidget
                 Tables\Columns\TextColumn::make('balance')
                     ->label('Balance')
                     ->money('IDR')
-                    ->getStateUsing(fn ($record) => $record->total_amount - $record->paid_amount)
+                    ->getStateUsing(fn ($record) => $record->total - $record->paid_amount)
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('due_date')

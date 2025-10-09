@@ -18,11 +18,28 @@ class LowStockProducts extends BaseWidget
         return $table
             ->query(
                 Product::query()
-                    ->select('products.*')
+                    ->select(
+                        'products.id',
+                        'products.sku',
+                        'products.name',
+                        'products.minimum_stock',
+                        'products.category_id',
+                        'products.unit_id',
+                        'products.is_active',
+                        DB::raw('SUM(stock_levels.quantity) as total_stock')
+                    )
                     ->join('stock_levels', 'products.id', '=', 'stock_levels.product_id')
-                    ->whereRaw('stock_levels.quantity <= products.min_stock_level')
-                    ->groupBy('products.id')
-                    ->orderByRaw('(stock_levels.quantity / NULLIF(products.min_stock_level, 0))')
+                    ->whereRaw('stock_levels.quantity <= products.minimum_stock')
+                    ->groupBy(
+                        'products.id',
+                        'products.sku',
+                        'products.name',
+                        'products.minimum_stock',
+                        'products.category_id',
+                        'products.unit_id',
+                        'products.is_active'
+                    )
+                    ->orderByRaw('SUM(stock_levels.quantity) / NULLIF(products.minimum_stock, 0)')
                     ->limit(10)
             )
             ->columns([
@@ -42,7 +59,7 @@ class LowStockProducts extends BaseWidget
                     ->badge()
                     ->color('danger'),
                 
-                Tables\Columns\TextColumn::make('min_stock_level')
+                Tables\Columns\TextColumn::make('minimum_stock')
                     ->label('Min Level')
                     ->badge()
                     ->color('warning'),

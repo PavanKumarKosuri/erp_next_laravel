@@ -29,6 +29,10 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Next ERP')
+            // ->brandLogo(asset('next-logo.png'))
+            // ->brandLogoHeight('3rem')
+            ->favicon(asset('next-logo.png'))
+            ->darkMode(false)
             ->colors([
                 'primary' => Color::Blue,
                 'gray' => Color::Slate,

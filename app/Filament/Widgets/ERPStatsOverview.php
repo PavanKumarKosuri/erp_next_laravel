@@ -20,11 +20,11 @@ class ERPStatsOverview extends BaseWidget
         // Calculate total sales (current month)
         $totalSales = SalesOrder::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
-            ->sum('total_amount');
+            ->sum('total');
 
         // Calculate outstanding invoices
         $outstandingInvoices = Invoice::where('status', '!=', 'paid')
-            ->sum(DB::raw('total_amount - paid_amount'));
+            ->sum(DB::raw('total - paid_amount'));
 
         // Calculate total stock value
         $stockValue = Product::join('stock_levels', 'products.id', '=', 'stock_levels.product_id')
@@ -39,9 +39,10 @@ class ERPStatsOverview extends BaseWidget
         $employeeCount = Employee::where('status', 'active')->count();
 
         // Count low stock products
-        $lowStockCount = Product::whereHas('stockLevels', function ($query) {
-            $query->whereRaw('quantity <= min_stock_level');
-        })->count();
+        $lowStockCount = Product::join('stock_levels', 'products.id', '=', 'stock_levels.product_id')
+            ->whereRaw('stock_levels.quantity <= products.minimum_stock')
+            ->distinct('products.id')
+            ->count('products.id');
 
         return [
             Stat::make('Total Sales (This Month)', 'Rp ' . number_format($totalSales, 0, ',', '.'))
