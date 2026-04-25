@@ -14,11 +14,20 @@ class SalesChart extends ChartWidget
 
     protected function getData(): array
     {
+        $driver = DB::connection()->getDriverName();
+
+        $monthExpression = match ($driver) {
+            'mysql' => "DATE_FORMAT(created_at, '%Y-%m')",
+            'pgsql' => "TO_CHAR(created_at, 'YYYY-MM')",
+            'sqlite' => "strftime('%Y-%m', created_at)",
+            default => "TO_CHAR(created_at, 'YYYY-MM')",
+        };
+
         // Get sales data for last 12 months
         $data = SalesOrder::where('created_at', '>=', now()->subMonths(12))
             ->where('status', '!=', 'cancelled')
             ->select(
-                DB::raw("TO_CHAR(created_at, 'YYYY-MM') as month"),
+                DB::raw("{$monthExpression} as month"),
                 DB::raw('SUM(total) as total')
             )
             ->groupBy('month')

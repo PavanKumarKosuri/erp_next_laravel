@@ -38,6 +38,11 @@ class Journal extends Model
         return $this->hasMany(JournalEntry::class);
     }
 
+    public function journalEntries(): HasMany
+    {
+        return $this->hasMany(JournalEntry::class);
+    }
+
     // Boot method for auto-numbering
     protected static function boot()
     {
